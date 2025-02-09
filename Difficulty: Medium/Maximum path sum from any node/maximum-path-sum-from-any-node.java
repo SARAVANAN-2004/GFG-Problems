@@ -116,21 +116,27 @@ class Node{
 
 class Solution {
     // Function to return maximum path sum from any node in a tree.
-    int max = Integer.MIN_VALUE;
-    int findMaxSum(Node node) {
+    int findMaxSum(Node root) {
         // your code goes here
-        int n = solve(node);
-        return max;
+        int[] res = {root.data};
+
+        // Compute maximum path sum and store it in 'res'
+        maxPathSumUtil(root, res);
+
+        return res[0];
     }
-    int  solve(Node root){
-        if( root == null){
-            return 0;
-        }
-        
-        int left = Math.max(0,solve(root.left));
-        int right = Math.max(0,solve(root.right));
-        
-        max = Math.max(max,root.data+left+right);
-        return root.data+Math.max(left,right);
+    int maxPathSumUtil(Node root, int[] res) {
+        // Base case: return 0 for a null node
+        if (root == null) return 0;
+
+        // Calculate maximum path sums for left and right subtrees
+        int l = Math.max(0, maxPathSumUtil(root.left, res));
+        int r = Math.max(0, maxPathSumUtil(root.right, res));
+
+        // Update 'res' with the maximum path sum passing through the current node
+        res[0] = Math.max(res[0], l + r + root.data);
+
+        // Return the maximum path sum rooted at this node
+        return root.data + Math.max(l, r);
     }
 }
