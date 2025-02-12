@@ -105,31 +105,36 @@ class GFG {
 
 class Solution {
     // Return the Kth smallest element in the given BST
-    int val = -1, cnt = 0;
-    boolean found  = false;
     public int kthSmallest(Node root, int k) {
         // Write your code here
-        // arr = new ArrayList<>();
-        dfs(root,k);
-        // System.out.println(arr);
-        return val;
+                // Write your code here
+        int[] cnt = {0};
+        return kthSmallestRecur(root, cnt, k);
     }
     
-    public void dfs(Node root,int k){
-        if(root == null || found){
-            return;
-        }
+
+    
+    int kthSmallestRecur(Node root, int[] cnt, int k) {
+        if (root == null) return -1;
         
-        dfs(root.left,k);
+        // Process left subtree.
+        int left = kthSmallestRecur(root.left, cnt, k);
         
-        cnt++;
-        if(cnt == k){
-            val = root.data;
-            found = true;
-            return;
-        }
-        if(!found){
-        dfs(root.right,k);
-        }
-    }
+        // If kth smallest is found in left 
+        // subtree, then return it.
+        if (left != -1) return left;
+        
+        // increment node count
+        cnt[0]++;
+        
+        // If curr node is kth smallest,
+        // return it.
+        if (cnt[0] == k) return root.data;
+        
+        // Else process the right subtree
+        // and return its value.
+        int right = kthSmallestRecur(root.right, cnt, k);
+       return right;
+    
+}
 }
