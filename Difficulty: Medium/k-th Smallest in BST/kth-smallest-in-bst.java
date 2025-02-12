@@ -105,7 +105,6 @@ class GFG {
 
 class Solution {
     // Return the Kth smallest element in the given BST
-    // List<Integer> arr;
     int val = -1, cnt = 0;
     boolean found  = false;
     public int kthSmallest(Node root, int k) {
@@ -133,5 +132,4 @@ class Solution {
         dfs(root.right,k);
         }
     }
-    
 }
