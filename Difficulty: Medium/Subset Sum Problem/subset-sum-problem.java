@@ -30,8 +30,10 @@ class GFG {
 
 class Solution {
 
+ 
     static Boolean isSubsetSum(int arr[], int sum) {
         // code here
+
         return solve(0,arr,sum,0);
     }
     
@@ -39,6 +41,9 @@ class Solution {
         if(cur == sum) return true;
         
         if(cur > sum || i >= arr.length) return false;
+        
+        
+        
         
         return solve(i+1,arr,sum,cur+arr[i]) || solve(i+1,arr,sum,cur);
     }
