@@ -1,77 +1,33 @@
-//{ Driver Code Starts
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-public class GFG {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int testCases = Integer.parseInt(br.readLine());
-
-        while (testCases-- > 0) {
-            int capacity = Integer.parseInt(br.readLine());
-            String[] valInput = br.readLine().split(" ");
-            String[] wtInput = br.readLine().split(" ");
-
-            int[] val = new int[valInput.length];
-            int[] wt = new int[wtInput.length];
-
-            for (int i = 0; i < valInput.length; i++) {
-                val[i] = Integer.parseInt(valInput[i]);
-            }
-
-            for (int i = 0; i < wtInput.length; i++) {
-                wt[i] = Integer.parseInt(wtInput[i]);
-            }
-
-            System.out.println(Solution.knapsack(capacity, val, wt));
-            System.out.println("~");
-        }
-    }
-}
-
-// } Driver Code Ends
-
-
-
 class Solution {
-    // Function to return max value that can be put in knapsack of capacity.
-    static int knapsack(int capacity, int val[], int wt[]) {
+    
+    
+    
+    static int knapsack(int W, int val[], int wt[]) {
         // code here
-        int n = val.length;
-        int dp[][] = new int[n][capacity+1];
-        for(int i=0;i<n;i++){
-            for(int j=0;j<capacity+1;j++){
-                dp[i][j] = -1;
-            }
-        }
-        return recur(capacity, val, wt, n-1,dp);
+        int[][] dp = new int[val.length][W+1];
+        for(int i[]:dp) Arrays.fill(i,-1);
+        return solve(val.length-1,W,val,wt,dp);
+        
     }
-    static int recur(int capacity, int val[], int wt[], int index, int dp[][]){
-        // base case
-        if(capacity == 0) {
-            dp[index][capacity] = 0;
-            return 0;
+    
+    static int solve(int i,int w,int[] val,int []wt,int [][]dp){
+        if(dp[i][w] != -1){
+            return dp[i][w];
         }
-        if(index==0){
-            if(wt[index]<=capacity){
-                dp[index][capacity] = val[index];
-                return val[index];
+        if(i == 0){
+            if(wt[i] <= w){
+                return val[i];
             }else{
-                dp[index][capacity] = 0;
                 return 0;
             }
         }
-        if(dp[index][capacity]!=-1){
-            return dp[index][capacity];
+        
+        int not_take = solve(i-1,w,val,wt,dp);
+        
+        int take = Integer.MIN_VALUE;
+        if(wt[i] <= w){
+            take = val[i] + solve(i-1,w-wt[i],val,wt,dp);
         }
-        int pick = 0;
-        if(wt[index] <= capacity){
-            pick = val[index] + recur(capacity - wt[index], val, wt, index-1, dp);
-        }
-
-        int noPick = 0 + recur(capacity, val, wt, index-1,dp);
-        dp[index][capacity] = Math.max(pick, noPick);
-        return dp[index][capacity];
+        return dp[i][w] = Math.max(take,not_take);
     }
 }
